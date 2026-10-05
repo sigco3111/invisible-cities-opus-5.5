@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invisible Cities — an atlas</title>
+  <meta name="description" content="A three.js atlas of the fifty-five cities Marco Polo describes to Kublai Khan in Italo Calvino’s Invisible Cities." />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <canvas id="gl"></canvas>
+  <div id="labels"></div>
+
+  <!-- intro -->
+  <section id="intro">
+    <div class="intro-inner">
+      <p class="over">Italo Calvino · <i>Le città invisibili</i> · 1972</p>
+      <h1>Invisible Cities</h1>
+      <p class="sub">An atlas of the fifty-five cities Marco Polo described to Kublai Khan</p>
+      <div class="rule"><span>✦</span></div>
+      <p class="prologue" id="prologue"></p>
+      <div class="loader"><div class="bar" id="loadbar"></div></div>
+      <p class="loadtext" id="loadtext">Laying the foundations…</p>
+      <button id="enter" disabled>Enter the atlas</button>
+      <p class="hint">Sound is generated live — best with headphones.</p>
+    </div>
+  </section>
+
+  <!-- top bar -->
+  <header id="top" class="hidden">
+    <button id="home" class="brand" title="Back to the atlas (Esc)"><span>Invisible Cities</span></button>
+    <nav id="layouts"></nav>
+    <div class="tools">
+      <button id="btn-contents" title="Contents (C)">Contents</button>
+      <button id="btn-tour" title="Journey with Marco (T)"><span class="ico">▶</span> Tour</button>
+      <button id="btn-night" title="Dusk / night (N)" class="ico-only">☾</button>
+      <button id="btn-sound" title="Sound (M)" class="ico-only">♪</button>
+      <button id="btn-help" title="Help (?)" class="ico-only">?</button>
+    </div>
+  </header>
+
+  <!-- category legend -->
+  <aside id="legend" class="hidden"></aside>
+
+  <!-- hover tooltip -->
+  <div id="tip" class="hidden"><div class="tip-cat"></div><div class="tip-name"></div><div class="tip-motif"></div></div>
+
+  <!-- city panel -->
+  <aside id="panel" class="hidden">
+    <button class="close" id="panel-close" title="Close (Esc)">×</button>
+    <div class="meta"><span id="p-chapter"></span><span id="p-order"></span></div>
+    <div class="cat" id="p-cat"></div>
+    <h2 id="p-name"></h2>
+    <p class="motif" id="p-motif"></p>
+    <div class="text" id="p-text"></div>
+    <div class="sibs" id="p-sibs"></div>
+    <div class="nav">
+      <button id="p-prev">← <span></span></button>
+      <button id="p-next"><span></span> →</button>
+    </div>
+    <div class="progress"><div id="p-progress"></div></div>
+  </aside>
+
+  <!-- contents -->
+  <section id="contents" class="overlay hidden">
+    <div class="overlay-inner wide">
+      <button class="close" data-close>×</button>
+      <h3>Contents</h3>
+      <p class="lede">Nine chapters. Eleven kinds of city, each told five times, braided in a descending pattern: every chapter opens a new thread and closes an old one. Click a city to travel there; click a chapter to read the conversation that follows it.</p>
+      <div id="toc"></div>
+    </div>
+  </section>
+
+  <!-- interlude -->
+  <section id="interlude" class="overlay hidden">
+    <div class="overlay-inner narrow">
+      <p class="il-kicker" id="il-kicker"></p>
+      <h3 id="il-title"></h3>
+      <p class="il-text" id="il-text"></p>
+      <div id="il-nav" class="il-nav hidden"><button id="il-prev">←</button><span id="il-pos"></span><button id="il-next">→</button></div>
+      <button id="il-go">Continue</button>
+    </div>
+  </section>
+
+  <!-- help -->
+  <section id="help" class="overlay hidden">
+    <div class="overlay-inner narrow">
+      <button class="close" data-close>×</button>
+      <h3>How to travel</h3>
+      <ul class="keys">
+        <li><kbd>drag</kbd> orbit · <kbd>right-drag</kbd> pan · <kbd>scroll</kbd> zoom</li>
+        <li><kbd>click</kbd> a city to visit it</li>
+        <li><kbd>←</kbd> <kbd>→</kbd> previous / next city in Marco’s order</li>
+        <li><kbd>↑</kbd> <kbd>↓</kbd> previous / next city of the same kind</li>
+        <li><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> Atlas · Journey · Chapters</li>
+        <li><kbd>T</kbd> tour · <kbd>C</kbd> contents · <kbd>N</kbd> night · <kbd>M</kbd> sound · <kbd>H</kbd> hide interface · <kbd>Esc</kbd> back</li>
+      </ul>
+      <p class="small">Each diorama is generated procedurally in the browser from a few hundred lines of code. The texts are paraphrases written for this atlas; read the book itself (trans. William Weaver, 1974).</p>
+    </div>
+  </section>
+
+  <div id="toast" class="hidden"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
