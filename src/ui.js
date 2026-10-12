@@ -1,3 +1,4 @@
+import { displayName } from './locale-ko.js';
 import { CITIES, CAT, CATEGORIES, INTERLUDES, ROMAN } from './data.js';
 import { LAYOUTS } from './world.js';
 
@@ -23,7 +24,7 @@ export function initUI(h) {
     const b = document.createElement('button');
     b.dataset.cat = c.id;
     b.innerHTML = `<i style="color:${c.color}">${c.glyph}</i><span>${c.short}</span>`;
-    b.title = `${c.name} — show only these five`;
+    b.title = `${c.name} - 이 갈래의 다섯 도시만 보기`;
     b.onclick = () => h.onFilter(c.id);
     legend.appendChild(b);
   }
@@ -35,7 +36,7 @@ export function initUI(h) {
   grid.style.gridTemplateColumns = `11em repeat(9, 1fr)`;
   grid.appendChild(cell('', 'corner'));
   ROMAN.forEach((r, ch) => {
-    const head = cell(`<b>${r}</b><small>read the dialogue</small>`, 'ch-head');
+    const head = cell(`<b>${r}</b><small>대화 읽기</small>`, 'ch-head');
     head.onclick = () => { closeOverlays(); h.onInterlude(ch); };
     grid.appendChild(head);
   });
@@ -48,7 +49,7 @@ export function initUI(h) {
         const a = document.createElement('button');
         a.className = 'toc-city';
         a.style.setProperty('--c', c.color);
-        a.innerHTML = `<span class="num">${city.order + 1}</span>${city.name}<em>${c.glyph} ${city.n}</em>`;
+        a.innerHTML = `<span class="num">${city.order + 1}</span>${displayName(city)}<em>${c.glyph} ${city.n}</em>`;
         a.onclick = () => { closeOverlays(); h.onFocus(city.order); };
         td.appendChild(a);
       }
@@ -56,6 +57,27 @@ export function initUI(h) {
     }
   }
   toc.appendChild(grid);
+  // A stacked reading-order contents list keeps every city usable on phones.
+  const mobile = document.createElement('div');
+  mobile.className = 'toc-mobile';
+  ROMAN.forEach((r, ch) => {
+    const section = document.createElement('section');
+    const head = document.createElement('button');
+    head.className = 'toc-mobile-heading';
+    head.textContent = `${r}장 · 대화 읽기`;
+    head.onclick = () => { closeOverlays(); h.onInterlude(ch); };
+    section.appendChild(head);
+    CITIES.filter(city => city.chapter === ch).forEach(city => {
+      const b = document.createElement('button');
+      b.className = 'toc-mobile-city';
+      b.style.setProperty('--c', CAT[city.cat].color);
+      b.innerHTML = `<span>${city.order + 1}. ${displayName(city)}</span><small>${CAT[city.cat].short} ${city.n}</small>`;
+      b.onclick = () => { closeOverlays(); h.onFocus(city.order); };
+      section.appendChild(b);
+    });
+    mobile.appendChild(section);
+  });
+  toc.appendChild(mobile);
   function cell(html, cls) { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; return d; }
 
   /* buttons */
@@ -107,7 +129,7 @@ export function initUI(h) {
     },
     progress(f, name) {
       $('loadbar').style.width = `${(f * 100).toFixed(1)}%`;
-      $('loadtext').textContent = f < 1 ? `Raising ${name}…` : 'All fifty-five cities are standing.';
+      $('loadtext').textContent = f < 1 ? `${name} 짓는 중…` : '쉰다섯 도시가 모두 세워졌습니다.';
     },
     loaded() {
       $('enter').disabled = false;
@@ -127,29 +149,29 @@ export function initUI(h) {
       panel.classList.remove('swap');
       void panel.offsetWidth;
       panel.classList.add('swap');
-      $('p-chapter').textContent = `Chapter ${ROMAN[city.chapter]}`;
+      $('p-chapter').textContent = `${ROMAN[city.chapter]}장`;
       $('p-order').textContent = `${city.order + 1} / 55`;
       $('p-cat').innerHTML = `<span class="glyph">${c.glyph}</span> ${c.name} · ${city.n}`;
-      $('p-name').textContent = city.name;
+      $('p-name').textContent = displayName(city);
       $('p-motif').textContent = city.motif;
-      $('p-text').innerHTML = city.text.split(/(?<=[.!?…”])\s+(?=[A-Z“])/).reduce((acc, s, i, arr) => {
+      $('p-text').innerHTML = (city.paragraphs || city.text.split(/(?<=[.!?…”])\s+(?=[\p{L}“])/u)).reduce((acc, s, i, arr) => {
         // split into ~2 paragraphs
         const mid = Math.ceil(arr.length / 2);
         acc[i < mid ? 0 : 1].push(s);
         return acc;
       }, [[], []]).filter((p) => p.length).map((p) => `<p>${p.join(' ')}</p>`).join('');
       const sibs = CITIES.filter((x) => x.cat === city.cat);
-      $('p-sibs').innerHTML = sibs.map((s) => `<button class="${s.id === city.id ? 'on' : ''}" data-i="${s.order}" title="${s.name}">${s.n}<span>${s.name}</span></button>`).join('');
+      $('p-sibs').innerHTML = sibs.map((s) => `<button class="${s.id === city.id ? 'on' : ''}" data-i="${s.order}" title="${displayName(s)}">${s.n}<span>${displayName(s)}</span></button>`).join('');
       $('p-sibs').querySelectorAll('button').forEach((b) => (b.onclick = () => h.onFocus(+b.dataset.i)));
       const prev = CITIES[(city.order + 54) % 55], next = CITIES[(city.order + 1) % 55];
-      $('p-prev').querySelector('span').textContent = prev.name;
-      $('p-next').querySelector('span').textContent = next.name;
+      $('p-prev').querySelector('span').textContent = displayName(prev);
+      $('p-next').querySelector('span').textContent = displayName(next);
       $('p-text').scrollTop = 0;
     },
     hidePanel() { $('panel').classList.add('hidden'); },
     setTour(on) {
       $('btn-tour').classList.toggle('on', on);
-      $('btn-tour').innerHTML = on ? '<span class="ico">❚❚</span> Pause' : '<span class="ico">▶</span> Tour';
+      $('btn-tour').innerHTML = on ? '<span class="ico">❚❚</span> 일시정지' : '<span class="ico">▶</span> 여행';
       body.classList.toggle('touring', on);
     },
     runProgress(ms) {
@@ -175,15 +197,15 @@ export function initUI(h) {
       $('interlude').classList.remove('hidden');
       clearTimeout(ilTimer);
       if (autoMs) ilTimer = setTimeout(finishInterlude, autoMs);
-      $('il-go').textContent = autoMs ? 'Continue the journey' : 'Close';
+      $('il-go').textContent = autoMs ? '여행 계속하기' : '닫기';
     },
     tooltip(city, p) {
       if (!city || !p) { tip.classList.add('hidden'); return; }
-      const c = CAT[city.cat] || { color: '#f0d9a0', glyph: '✧', name: 'The first city' };
+      const c = CAT[city.cat] || { color: '#f0d9a0', glyph: '✧', name: '첫 번째 도시' };
       tip.classList.remove('hidden');
       tip.style.setProperty('--c', c.color);
       tip.querySelector('.tip-cat').textContent = `${c.glyph} ${c.name}${city.n ? ' · ' + city.n : ''}`;
-      tip.querySelector('.tip-name').textContent = city.name;
+      tip.querySelector('.tip-name').textContent = displayName(city);
       tip.querySelector('.tip-motif').textContent = city.motif;
       const x = Math.min(p.x + 18, innerWidth - 300);
       tip.style.transform = `translate(${x}px, ${p.y + 18}px)`;
