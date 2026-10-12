@@ -1,3 +1,4 @@
+import { CATEGORY_KO, CITY_KO, INTERLUDE_KO } from './locale-ko.js';
 // The 55 cities, in the order Marco Polo describes them to Kublai Khan.
 // Texts are original paraphrases written for this atlas, not quotations from the book.
 
@@ -14,6 +15,11 @@ export const CATEGORIES = [
   { id: 'continuous', short: 'Continuous', name: 'Continuous Cities', color: '#d0664a', glyph: '∞' },
   { id: 'hidden', short: 'Hidden', name: 'Hidden Cities', color: '#5fd394', glyph: '◈' },
 ];
+
+for (const c of CATEGORIES) {
+  c.originalName = c.name;
+  [c.short, c.name] = CATEGORY_KO[c.id];
+}
 
 export const CAT = Object.fromEntries(CATEGORIES.map((c, i) => [c.id, { ...c, index: i }]));
 
@@ -154,6 +160,14 @@ export const CITIES = RAW.map(([name, cat, n, motif, text], i) => ({
   order: i, // reading order 0..54
 }));
 
+for (const city of CITIES) {
+  const ko = CITY_KO[city.id];
+  if (!ko) continue;
+  city.originalText = city.text;
+  city.originalMotif = city.motif;
+  Object.assign(city, ko, { text: ko.paragraphs.join('\n\n'), lang: 'ko' });
+}
+
 // Chapter membership (the book's nine chapters)
 const CHAPTER_SIZES = [10, 5, 5, 5, 5, 5, 5, 5, 10];
 {
@@ -191,3 +205,8 @@ export const INTERLUDES = [
   { after: 8, title: 'The Inferno of the Living',
     text: 'Marco answered: the inferno of the living is not something that will be; if there is one, it is what is already here, the inferno we live in every day, that we form by being together. There are two ways to escape suffering it. The first is easy for many: accept the inferno and become such a part of it that you can no longer see it. The second is risky and demands constant vigilance and learning: seek and learn to recognise who and what, in the midst of the inferno, are not inferno — then make them endure, and give them space.' },
 ];
+
+for (const il of INTERLUDES) {
+  il.originalTitle = il.title; il.originalText = il.text;
+  Object.assign(il, INTERLUDE_KO[il.after], { lang: 'ko' });
+}
