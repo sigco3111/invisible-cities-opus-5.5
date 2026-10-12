@@ -115,6 +115,9 @@ importers:
       '@fontsource/im-fell-english':
         specifier: ^5.3.0
         version: 5.3.0
+      '@fontsource/noto-serif-kr':
+        specifier: ^5.3.1
+        version: 5.3.1
       three:
         specifier: ^0.186.1
         version: 0.186.1
@@ -133,6 +136,9 @@ packages:
 
   '@fontsource/im-fell-english@5.3.0':
     resolution: {integrity: sha512-FcgdWfY9WeUM2gQkfmwhn4Ed9LVtlll8LSSZvHfbsUrnHK5tHHnGg6BgwAfHogp52adU3eE89J/3B52qV3b+Vw==}
+
+  '@fontsource/noto-serif-kr@5.3.1':
+    resolution: {integrity: sha512-xtsAgK4S4MjPllHRSAFaMiB7xnFb8Nlhx47uPaD/qvyTP5WgRICNawZmwGzLVshCyA/QmydSVzA9kWF8otycpQ==}
 
   '@oxc-project/types@0.152.0':
     resolution: {integrity: sha512-oM/5rLBm2tPkg0iBgkH/FOeR3PCDpY19GTgAZjMFM8h9WI9VW7cLgzp6nwtarYKmovavIQZ+Fe/RKX/8C8O/Rw==}
@@ -413,6 +419,8 @@ snapshots:
   '@fontsource/cormorant-garamond@5.3.0': {}
 
   '@fontsource/im-fell-english@5.3.0': {}
+
+  '@fontsource/noto-serif-kr@5.3.1': {}
 
   '@oxc-project/types@0.152.0': {}
 
