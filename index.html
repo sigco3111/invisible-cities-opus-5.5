@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="utf-8" />
+  <link rel="icon" href="data:," />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Invisible Cities — an atlas</title>
-  <meta name="description" content="A three.js atlas of the fifty-five cities Marco Polo describes to Kublai Khan in Italo Calvino’s Invisible Cities." />
+  <title>보이지 않는 도시들 | 한국어판</title>
+  <meta name="description" content="이탈로 칼비노의 보이지 않는 도시들에서 영감을 받은 쉰다섯 도시의 3D 지도. 55개 도시와 대화의 한국어판." />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
@@ -14,28 +15,28 @@
   <!-- intro -->
   <section id="intro">
     <div class="intro-inner">
-      <p class="over">Italo Calvino · <i>Le città invisibili</i> · 1972</p>
-      <h1>Invisible Cities</h1>
-      <p class="sub">An atlas of the fifty-five cities Marco Polo described to Kublai Khan</p>
+      <p class="over">이탈로 칼비노 · <i>Le città invisibili</i> · 1972</p>
+      <h1>보이지 않는 도시들</h1>
+      <p class="sub">마르코 폴로가 쿠빌라이 칸에게 들려준 쉰다섯 도시의 지도</p>
       <div class="rule"><span>✦</span></div>
       <p class="prologue" id="prologue"></p>
       <div class="loader"><div class="bar" id="loadbar"></div></div>
-      <p class="loadtext" id="loadtext">Laying the foundations…</p>
-      <button id="enter" disabled>Enter the atlas</button>
-      <p class="hint">Sound is generated live — best with headphones.</p>
+      <p class="loadtext" id="loadtext">도시의 기초를 다지는 중…</p>
+      <button id="enter" disabled>지도 펼치기</button>
+      <p class="hint">소리는 실시간으로 만들어집니다. 헤드폰을 권합니다.</p>
     </div>
   </section>
 
   <!-- top bar -->
   <header id="top" class="hidden">
-    <button id="home" class="brand" title="Back to the atlas (Esc)"><span>Invisible Cities</span></button>
+    <button id="home" class="brand" title="전체 지도로 돌아가기 (Esc)"><span>보이지 않는 도시들</span></button>
     <nav id="layouts"></nav>
     <div class="tools">
-      <button id="btn-contents" title="Contents (C)">Contents</button>
-      <button id="btn-tour" title="Journey with Marco (T)"><span class="ico">▶</span> Tour</button>
-      <button id="btn-night" title="Dusk / night (N)" class="ico-only">☾</button>
-      <button id="btn-sound" title="Sound (M)" class="ico-only">♪</button>
-      <button id="btn-help" title="Help (?)" class="ico-only">?</button>
+      <button id="btn-contents" title="목차 (C)">목차</button>
+      <button id="btn-tour" title="마르코와 함께 여행하기 (T)"><span class="ico">▶</span> 여행</button>
+      <button id="btn-night" title="황혼 / 밤 (N)" class="ico-only">☾</button>
+      <button id="btn-sound" title="소리 (M)" class="ico-only">♪</button>
+      <button id="btn-help" title="도움말 (?)" class="ico-only">?</button>
     </div>
   </header>
 
@@ -47,7 +48,7 @@
 
   <!-- city panel -->
   <aside id="panel" class="hidden">
-    <button class="close" id="panel-close" title="Close (Esc)">×</button>
+    <button class="close" id="panel-close" title="닫기 (Esc)">×</button>
     <div class="meta"><span id="p-chapter"></span><span id="p-order"></span></div>
     <div class="cat" id="p-cat"></div>
     <h2 id="p-name"></h2>
@@ -65,8 +66,8 @@
   <section id="contents" class="overlay hidden">
     <div class="overlay-inner wide">
       <button class="close" data-close>×</button>
-      <h3>Contents</h3>
-      <p class="lede">Nine chapters. Eleven kinds of city, each told five times, braided in a descending pattern: every chapter opens a new thread and closes an old one. Click a city to travel there; click a chapter to read the conversation that follows it.</p>
+      <h3>목차</h3>
+      <p class="lede">아홉 장, 열한 갈래의 도시. 각 갈래는 다섯 번씩 등장하며 서로 엮입니다. 장이 바뀔 때마다 새로운 갈래가 열리고 오래된 갈래가 닫힙니다. 도시를 누르면 그곳으로, 장 번호를 누르면 그 장 뒤의 대화로 이동합니다.</p>
       <div id="toc"></div>
     </div>
   </section>
@@ -78,7 +79,7 @@
       <h3 id="il-title"></h3>
       <p class="il-text" id="il-text"></p>
       <div id="il-nav" class="il-nav hidden"><button id="il-prev">←</button><span id="il-pos"></span><button id="il-next">→</button></div>
-      <button id="il-go">Continue</button>
+      <button id="il-go">계속</button>
     </div>
   </section>
 
@@ -86,16 +87,16 @@
   <section id="help" class="overlay hidden">
     <div class="overlay-inner narrow">
       <button class="close" data-close>×</button>
-      <h3>How to travel</h3>
+      <h3>여행하는 법</h3>
       <ul class="keys">
-        <li><kbd>drag</kbd> orbit · <kbd>right-drag</kbd> pan · <kbd>scroll</kbd> zoom</li>
-        <li><kbd>click</kbd> a city to visit it</li>
-        <li><kbd>←</kbd> <kbd>→</kbd> previous / next city in Marco’s order</li>
-        <li><kbd>↑</kbd> <kbd>↓</kbd> previous / next city of the same kind</li>
-        <li><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> Atlas · Journey · Chapters</li>
-        <li><kbd>T</kbd> tour · <kbd>C</kbd> contents · <kbd>N</kbd> night · <kbd>M</kbd> sound · <kbd>H</kbd> hide interface · <kbd>Esc</kbd> back</li>
+        <li><kbd>드래그</kbd> 회전 · <kbd>오른쪽 드래그</kbd> 이동 · <kbd>스크롤</kbd> 확대·축소</li>
+        <li>도시를 <kbd>클릭</kbd>하면 그곳으로 이동</li>
+        <li><kbd>←</kbd> <kbd>→</kbd> 마르코의 이야기 순서로 이전 / 다음 도시</li>
+        <li><kbd>↑</kbd> <kbd>↓</kbd> 같은 갈래의 이전 / 다음 도시</li>
+        <li><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> 도시 지도 · 여정 · 장별 보기</li>
+        <li><kbd>T</kbd> 자동 여행 · <kbd>C</kbd> 목차 · <kbd>N</kbd> 밤 · <kbd>M</kbd> 소리 · <kbd>H</kbd> 화면 메뉴 숨기기 · <kbd>Esc</kbd> 돌아가기</li>
       </ul>
-      <p class="small">Each diorama is generated procedurally in the browser from a few hundred lines of code. The texts are paraphrases written for this atlas; read the book itself (trans. William Weaver, 1974).</p>
+      <p class="small">각 도시의 모형은 브라우저에서 코드로 생성됩니다. 본문은 원작의 직접 인용이 아니라 이 지도용으로 다시 쓴 글입니다. 이 한국어판 역시 저장소의 영어 글을 옮긴 것으로, 출판된 한국어 번역본의 문장이 아닙니다.</p>
     </div>
   </section>
 
