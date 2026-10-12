@@ -1,3 +1,5 @@
+import '@fontsource/noto-serif-kr/400.css';
+import { displayName, INTRO_KO } from './locale-ko.js';
 import '@fontsource/cormorant-garamond/400.css';
 import '@fontsource/cormorant-garamond/400-italic.css';
 import '@fontsource/cormorant-garamond/600.css';
@@ -132,7 +134,7 @@ for (const city of CITIES) {
 
   const el = document.createElement('div');
   el.className = 'label';
-  el.innerHTML = `<span class="g" style="color:${CAT[city.cat].color}">${CAT[city.cat].glyph}</span><span class="n">${city.name}</span>`;
+  el.innerHTML = `<span class="g" style="color:${CAT[city.cat].color}">${CAT[city.cat].glyph}</span><span class="n">${displayName(city)}</span>`;
   el.addEventListener('click', () => focusCity(city.order));
   const label = new CSS2DObject(el);
   label.position.set(0, 14, 0);
@@ -164,7 +166,7 @@ CATEGORIES.forEach((c, i) => {
 for (let n = 1; n <= 5; n++) caption(`${n}`, new THREE.Vector3(-5 * 30 - 22, 0, (n - 3) * 30), 'atlas', 'row');
 ROMAN.forEach((r, ch) => {
   const size = ch === 0 || ch === 8 ? 10 : 5;
-  caption(`<small>Chapter</small>${r}`, new THREE.Vector3(-(size / 2) * 30 - 8, 0, (ch - 4) * 30), 'chapters', 'row ch');
+  caption(`<small>장</small>${r}`, new THREE.Vector3(-(size / 2) * 30 - 8, 0, (ch - 4) * 30), 'chapters', 'row ch');
 });
 function updateCaptions() {
   const show = state.mode === 'overview' || state.mode === 'intro';
@@ -191,7 +193,7 @@ const pavFrom = new THREE.Vector3(), pavTo = pavHolder.position.clone();
   hitTargets.push(hit);
   const el = document.createElement('div');
   el.className = 'label venice pav';
-  el.innerHTML = `<span class="n">Kublai Khan &amp; Marco Polo</span>`;
+  el.innerHTML = `<span class="n">쿠빌라이 칸과 마르코 폴로</span>`;
   el.addEventListener('click', () => visitPavilion());
   const lab = new CSS2DObject(el);
   lab.position.set(0, 19, 0);
@@ -202,7 +204,7 @@ let ilIndex = 0;
 function browseInterlude(i) {
   ilIndex = (i + INTERLUDES.length) % INTERLUDES.length;
   const il = INTERLUDES[ilIndex];
-  const kicker = il.after < 0 ? 'Prologue' : il.after === 8 ? 'Epilogue' : `After chapter ${ROMAN[il.after]}`;
+  const kicker = il.after < 0 ? '서문' : il.after === 8 ? '맺음말' : `${ROMAN[il.after]}장 뒤의 대화`;
   ui.showInterlude(kicker, il.title, il.text, null, 0, { prev: () => browseInterlude(ilIndex - 1), next: () => browseInterlude(ilIndex + 1), pos: `${ilIndex + 1} / ${INTERLUDES.length}` });
 }
 function visitPavilion() {
@@ -237,7 +239,7 @@ async function buildVenice() {
     hitTargets.push(hit);
     const el = document.createElement('div');
     el.className = 'label venice';
-    el.innerHTML = `<span class="g">✧</span><span class="n">Venice</span>`;
+    el.innerHTML = `<span class="g">✧</span><span class="n">베네치아</span>`;
     el.addEventListener('click', () => visitVenice());
     const label = new CSS2DObject(el);
     label.position.set(0, 30, 0);
@@ -452,7 +454,7 @@ function updateLabelVisibility() {
 
 const tour = { active: false, timer: null, waiting: false };
 
-function readingTime(city) { return Math.max(16, city.text.length / 17) * 1000; }
+function readingTime(city) { return Math.max(16, city.text.length / (city.lang === 'ko' ? 9 : 17)) * 1000; }
 
 function startTour() {
   tour.active = true;
@@ -485,9 +487,9 @@ function stopTour() {
 function showInterlude(after, then) {
   const il = INTERLUDES.find((x) => x.after === after);
   if (!il) { then && then(); return; }
-  const kicker = after < 0 ? 'Prologue' : after === 8 ? 'Epilogue' : `After chapter ${ROMAN[after]}`;
+  const kicker = after < 0 ? '서문' : after === 8 ? '맺음말' : `${ROMAN[after]}장 뒤의 대화`;
   sound.interlude();
-  ui.showInterlude(kicker, il.title, il.text, () => then && then(), tour.active ? Math.max(18000, il.text.length * 62) : 0);
+  ui.showInterlude(kicker, il.title, il.text, () => then && then(), tour.active ? Math.max(18000, il.text.length * (il.lang === 'ko' ? 110 : 62)) : 0);
 }
 
 /* --------------------------------------------------------------- UI -- */
@@ -561,7 +563,7 @@ function pick(x, y) {
 }
 
 const PAV_TIP = { cat: null, name: 'The Khan’s garden', motif: 'Where Marco tells and Kublai listens — click to read their conversations', n: '' };
-const VENICE_TIP = { cat: null, name: 'Venice', motif: 'The city Marco never names — implicit in every other', n: '' };
+const VENICE_TIP = { cat: null, name: 'Venice', displayName: '베네치아', motif: '마르코가 이름을 말하지 않는 도시, 모든 다른 도시 속에 암묵적으로 있는 도시', n: '' };
 function updateHover() {
   const i = pointer ? pick(pointer.x, pointer.y) : -1;
   const isV = i === 'venice' || i === 'pavilion';
@@ -743,7 +745,7 @@ function declutterLabels() {
     e.label.getWorldPosition(_lp);
     const d = _lp.distanceTo(camera.position);
     _lp.project(camera);
-    return { e, d, x: (_lp.x * 0.5 + 0.5) * innerWidth, y: (-_lp.y * 0.5 + 0.5) * innerHeight, w: e.city.name.length * 8.5 + 26 };
+    return { e, d, x: (_lp.x * 0.5 + 0.5) * innerWidth, y: (-_lp.y * 0.5 + 0.5) * innerHeight, w: e.el.getBoundingClientRect().width };
   }).sort((a, b) => (a.e.city.order === state.hover ? -1 : b.e.city.order === state.hover ? 1 : a.d - b.d));
   const kept = [];
   for (const it of items) {
@@ -765,7 +767,7 @@ async function boot() {
   for (const e of entries) {
     await buildCity(e);
     done++;
-    ui.progress(done / entries.length, e.city.name);
+    ui.progress(done / entries.length, displayName(e.city));
     if (done % 2 === 0) await new Promise((r) => requestAnimationFrame(r));
   }
   await buildVenice();
