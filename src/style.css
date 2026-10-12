@@ -235,3 +235,67 @@ kbd { font-family: var(--serif); font-size: 14px; border: 1px solid var(--line);
   #toc { overflow-x: auto; }
   .toc-grid { min-width: 900px; }
 }
+
+/* Korean sample: retain the original night-atlas palette and serif character. */
+:root {
+  --serif: 'Noto Serif KR', 'Batang', 'AppleMyungjo', serif;
+  --display: 'Noto Serif KR', 'Batang', 'AppleMyungjo', serif;
+}
+html[lang='ko'] { word-break: keep-all; overflow-wrap: break-word; }
+.intro-inner h1 { font-size: clamp(34px, 6vw, 72px); line-height: 1.35; letter-spacing: -0.045em; }
+.intro-inner .over { letter-spacing: 0.06em; }
+.intro-inner .sub { font-size: 18px; line-height: 1.7; }
+.prologue { font-style: normal; line-height: 1.9; font-size: 18px; }
+.hint { line-height: 1.8; }
+.brand { font-size: 21px; letter-spacing: -0.04em; white-space: nowrap; }
+#layouts button { line-height: 1.4; font-size: 15px; }
+#layouts button small { font-style: normal; font-size: 10px; }
+#panel h2 { line-height: 1.3; font-size: 42px; letter-spacing: -0.04em; }
+#panel .motif { font-size: 17px; font-style: normal; line-height: 1.65; }
+#panel .text { font-size: 17px; line-height: 1.95; min-height: 80px; }
+#panel .text p:first-child::first-letter { float: none; font-size: inherit; line-height: inherit; padding: 0; }
+#panel .text p:first-child { border-top: 1px solid var(--line); padding-top: 12px; }
+.sibs button { line-height: 1.5; padding: 5px 2px; min-width: 0; }
+.sibs button span { max-width: 100%; overflow-wrap: anywhere; }
+#tip { max-width: calc(100vw - 24px); }
+.tip-name { line-height: 1.4; }
+.tip-motif, .lede, .small { font-style: normal; line-height: 1.75; }
+.keys { font-size: 16px; line-height: 2.1; }
+#contents .lede { line-height: 1.8; }
+#toc { overflow-x: auto; }
+.toc-grid { min-width: 1120px; }
+.toc-city { white-space: normal; overflow: visible; line-height: 1.5; flex-wrap: wrap; }
+.cat-head { font-size: 13px; }
+.ch-head small { opacity: 0.8; font-style: normal; }
+.caption { line-height: 1.5; font-size: 13px; }
+@media (max-width: 860px) {
+  .brand span { font-size: 17px; }
+  header#top { gap: 6px; }
+  #panel { height: 54vh; }
+  #panel h2 { font-size: 32px; }
+  #panel .motif { font-size: 15px; margin-bottom: 8px; }
+  #panel .text { font-size: 15px; }
+  .sibs button span { font-size: 10px; }
+  .nav button { font-size: 13px; }
+  #contents .overlay-inner { padding: 20px 16px; }
+}
+@media (max-width: 380px) {
+  header#top .tools { width: 100%; justify-content: flex-end; }
+  #panel { height: 52vh; }
+}
+
+.toc-mobile { display: none; }
+@media (max-width: 860px) {
+  .toc-grid { display: none; }
+  .toc-mobile { display: block; }
+  .toc-mobile section { margin-top: 18px; }
+  .toc-mobile-heading { color: var(--gold); padding: 10px 0; min-height: 44px; font-size: 16px; }
+  .toc-mobile-city { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+  .toc-mobile-city small { color: var(--c); flex-shrink: 0; font-size: 12px; }
+  #btn-help { display: block; }
+  .sibs button span { word-break: normal; overflow-wrap: normal; white-space: nowrap; font-size: 9px; }
+  .intro-inner .sub { font-style: normal; }
+}
+.il-text { white-space: pre-line; font-style: normal; font-size: 18px; line-height: 1.9; }
+.intro-inner .sub { font-style: normal; }
+@media (max-width: 860px) { .il-text { font-size: 16px; } .sibs button span { white-space: normal; font-size: 10px; } }
