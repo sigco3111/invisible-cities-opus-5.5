@@ -193,20 +193,20 @@ function spiralPositions() {
 
 export const LAYOUTS = {
   atlas: {
-    label: 'Atlas',
-    hint: 'eleven kinds of city, five of each',
+    label: '도시 지도',
+    hint: '열한 갈래, 각 다섯 도시',
     positions: CITIES.map((c) => new THREE.Vector3((CAT[c.cat].index - 5) * SPACING, 0, (c.n - 3) * SPACING)),
     overview: { pos: [0, 175, 235], target: [0, 0, 8] },
   },
   journey: {
-    label: 'Journey',
-    hint: 'the order in which Marco tells them',
+    label: '여정',
+    hint: '마르코가 이야기한 순서',
     positions: spiralPositions(),
     overview: { pos: [0, 260, 300], target: [0, 0, 0] },
   },
   chapters: {
-    label: 'Chapters',
-    hint: 'nine chapters, as in the book',
+    label: '장별 보기',
+    hint: '책 속의 아홉 장',
     positions: CITIES.map((c) => {
       const size = c.chapter === 0 || c.chapter === 8 ? 10 : 5;
       return new THREE.Vector3((c.inChapter - (size - 1) / 2) * SPACING, 0, (c.chapter - 4) * SPACING);
